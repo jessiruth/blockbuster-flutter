@@ -91,6 +91,7 @@ class _AddItemState extends State<AddItem> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     keyboardType: TextInputType.multiline,
+                    maxLines: 3,
                     decoration: InputDecoration(
                       hintText: 'Lorem ipsum dolor sit amet',
                       labelText: 'Deskripsi',
@@ -234,6 +235,9 @@ class _AddItemState extends State<AddItem> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white),
                     // Add Image
                     onPressed: () async {
                       final picker = ImagePicker();
@@ -253,6 +257,9 @@ class _AddItemState extends State<AddItem> {
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: Colors.white),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             showDialog(

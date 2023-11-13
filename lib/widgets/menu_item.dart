@@ -31,6 +31,7 @@ class MenuCard extends StatelessWidget {
                     fontSize: 16.0,
                   ),
                 ),
+                duration: const Duration(seconds: 1),
                 backgroundColor: item.color,
               ),
             );
