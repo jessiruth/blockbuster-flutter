@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:blockbuster/screens/add_item.dart';
 
 class MenuItem {
   final String name;
@@ -33,6 +34,14 @@ class MenuCard extends StatelessWidget {
                 backgroundColor: item.color,
               ),
             );
+
+          // Navigator
+          if (item.name == "Tambah Item") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddItem()),
+            );
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(8),
