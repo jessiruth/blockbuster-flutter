@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:blockbuster/menu.dart';
+import 'package:blockbuster/screens/menu.dart';
 
 void main() {
   runApp(const BlockbusterApp());
