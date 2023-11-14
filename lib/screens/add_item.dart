@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:blockbuster/models/item.dart';
+import 'package:blockbuster/widgets/left_drawer.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _AddItemState extends State<AddItem> {
           foregroundColor: Colors.white,
           backgroundColor: Theme.of(context).primaryColor,
         ),
+        drawer: const LeftDrawer(),
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(

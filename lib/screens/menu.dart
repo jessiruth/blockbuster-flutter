@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blockbuster/widgets/menu_item.dart';
+import 'package:blockbuster/widgets/left_drawer.dart';
 
 class Menu extends StatelessWidget {
   Menu({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class Menu extends StatelessWidget {
         foregroundColor: Colors.white,
         backgroundColor: Theme.of(context).primaryColor,
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
