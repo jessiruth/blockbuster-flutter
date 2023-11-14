@@ -251,6 +251,18 @@ class _AddItemState extends State<AddItem> {
                   ),
                 ),
                 Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: _item.image == ''
+                          ? const Text('No image selected.')
+                          : Image.file(File(_item.image)),
+                    ),
+                  ),
+                ),
+                Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -261,7 +273,8 @@ class _AddItemState extends State<AddItem> {
                             backgroundColor: Theme.of(context).primaryColor,
                             foregroundColor: Colors.white),
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() &&
+                              _item.image != '') {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -298,6 +311,7 @@ class _AddItemState extends State<AddItem> {
                               },
                             );
                             _formKey.currentState!.reset();
+                            _item.image = '';
                           }
                         },
                         child: const Text(

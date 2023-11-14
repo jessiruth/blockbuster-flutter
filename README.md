@@ -624,6 +624,7 @@ class _AddItemState extends State<AddItem> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     keyboardType: TextInputType.multiline,
+                    maxLines: 3,
                     decoration: InputDecoration(
                       hintText: 'Lorem ipsum dolor sit amet',
                       labelText: 'Deskripsi',
@@ -767,6 +768,9 @@ class _AddItemState extends State<AddItem> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white),
                     // Add Image
                     onPressed: () async {
                       final picker = ImagePicker();
@@ -780,14 +784,30 @@ class _AddItemState extends State<AddItem> {
                   ),
                 ),
                 Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: _item.image == ''
+                          ? const Text('No image selected.')
+                          : Image.file(File(_item.image)),
+                    ),
+                  ),
+                ),
+                Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: Colors.white),
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() &&
+                              _item.image != '') {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -824,6 +844,7 @@ class _AddItemState extends State<AddItem> {
                               },
                             );
                             _formKey.currentState!.reset();
+                            _item.image = '';
                           }
                         },
                         child: const Text(
@@ -843,6 +864,7 @@ class _AddItemState extends State<AddItem> {
         ));
   }
 }
+
 ```
 Lalu saya menambahkan *route* untuk *screen* `AddItem` di *file* `menu_item.dart` agar ketika tombol `Tambah Item` ditekan, maka *screen* `AddItem` akan ditampilkan. Berikut adalah *code* untuk *file* `menu_item.dart`:
 ```dart
