@@ -14,12 +14,14 @@ class ItemList extends StatelessWidget {
       drawer: const LeftDrawer(),
       appBar: AppBar(
         title: const Text('Blockbuster'),
+        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.7,
+          childAspectRatio: 0.5,
         ),
         itemCount: items.length,
         itemBuilder: (context, index) {

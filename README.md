@@ -1083,13 +1083,20 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: const Color(0xFFF2BED1),
       child: InkWell(
         onTap: () {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text(item.name),
+                title: Text(
+                  item.name,
+                  style: const TextStyle(
+                    color: Color(0xFFB0578D),
+                  ),
+                ),
+                backgroundColor: Theme.of(context).primaryColor,
                 content: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1101,12 +1108,30 @@ class ItemCard extends StatelessWidget {
                           : Image.file(
                               File(item.image),
                             ),
-                      Text("Price: ${item.price}"),
-                      Text("Year: ${item.year}"),
-                      Text("Genre: ${item.genre}"),
-                      Text("Duration: ${item.duration}"),
-                      Text("Rating: ${item.rating}"),
-                      Text("Description: ${item.description}"),
+                      Text("Price: ${item.price}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          )),
+                      Text("Year: ${item.year}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          )),
+                      Text("Genre: ${item.genre}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          )),
+                      Text("Duration: ${item.duration}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          )),
+                      Text("Rating: ${item.rating}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          )),
+                      Text("Description: ${item.description}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                          )),
                     ],
                   ),
                 ),
@@ -1129,11 +1154,11 @@ class ItemCard extends StatelessWidget {
               child: item.image.startsWith('assets')
                   ? Image.asset(
                       item.image,
-                      width: double.infinity,
+                      fit: BoxFit.cover,
                     )
                   : Image.file(
                       File(item.image),
-                      width: double.infinity,
+                      fit: BoxFit.cover,
                     ),
             ),
             Padding(
@@ -1143,6 +1168,7 @@ class ItemCard extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
+                  color: Color(0xFFB0578D),
                 ),
               ),
             ),
@@ -1151,7 +1177,8 @@ class ItemCard extends StatelessWidget {
               child: Text(
                 "${item.genre} - ${item.rating}",
                 style: const TextStyle(
-                  fontSize: 12.0,
+                  fontSize: 14.0,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -1181,12 +1208,14 @@ class ItemList extends StatelessWidget {
       drawer: const LeftDrawer(),
       appBar: AppBar(
         title: const Text('Blockbuster'),
+        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.7,
+          childAspectRatio: 0.5,
         ),
         itemCount: items.length,
         itemBuilder: (context, index) {
@@ -1195,24 +1224,6 @@ class ItemList extends StatelessWidget {
       ),
     );
   }
-}
-
-```
-
-### 5. Mengimplementasikan *navigation* untuk melihat daftar item
-Selanjutnya, saya mengimplementasikan *navigation* untuk melihat daftar item. Berikut adalah *code* yang saya tambahkan untuk *file* `menu_item.dart`:
-```dart
-...
-import 'package:blockbuster/models/item.dart';
-import 'package:blockbuster/screens/item_list.dart';
-
-... // Pada bagian onTap
-// Navigator
-if (item.name == "Lihat Item") {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => ItemList(items: items)),
-  );
 }
 
 ...
