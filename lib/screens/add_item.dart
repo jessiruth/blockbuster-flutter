@@ -289,16 +289,16 @@ class _AddItemState extends State<AddItem> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('Nama: ${_item.name}'),
-                                        Text('Jumlah: ${_item.amount}'),
-                                        Text('Deskripsi: ${_item.description}'),
-                                        Text('Harga: ${_item.price}'),
-                                        Text('Tahun: ${_item.year}'),
-                                        Text('Genre: ${_item.genre}'),
-                                        Text('Durasi: ${_item.duration}'),
-                                        Text('Rating: ${_item.rating}'),
-                                        // Show Image
                                         Image.file(File(_item.image)),
+                                        Text("Name: ${_item.name}"),
+                                        Text("Amount: ${_item.amount}"),
+                                        Text("Price: ${_item.price}"),
+                                        Text("Year: ${_item.year}"),
+                                        Text("Genre: ${_item.genre}"),
+                                        Text("Duration: ${_item.duration}"),
+                                        Text("Rating: ${_item.rating}"),
+                                        Text(
+                                            "Description: ${_item.description}"),
                                       ],
                                     ),
                                   ),

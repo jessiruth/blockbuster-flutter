@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:blockbuster/models/item.dart';
 import 'package:blockbuster/screens/add_item.dart';
+import 'package:blockbuster/screens/item_list.dart';
 
 class MenuItem {
   final String name;
@@ -41,6 +43,12 @@ class MenuCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => AddItem()),
+            );
+          }
+          if (item.name == "Lihat Item") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ItemList(items: items)),
             );
           }
         },

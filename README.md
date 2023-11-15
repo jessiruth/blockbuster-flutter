@@ -536,6 +536,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:blockbuster/models/item.dart';
+import 'package:blockbuster/widgets/left_drawer.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({Key? key}) : super(key: key);
@@ -566,6 +567,7 @@ class _AddItemState extends State<AddItem> {
           foregroundColor: Colors.white,
           backgroundColor: Theme.of(context).primaryColor,
         ),
+        drawer: const LeftDrawer(),
         body: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -626,7 +628,8 @@ class _AddItemState extends State<AddItem> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 3,
                     decoration: InputDecoration(
-                      hintText: 'Lorem ipsum dolor sit amet',
+                      hintText:
+                          "The son of a sailor, 5-year-old Sosuke lives a quiet life on an oceanside cliff with his mother Lisa. One fateful day, he finds a beautiful goldfish trapped in a bottle on the beach and upon rescuing her, names her Ponyo. But she is no ordinary goldfish. The daughter of a masterful wizard and a sea goddess, Ponyo uses her father's magic to transform herself into a young girl and quickly falls in love with Sosuke, but the use of such powerful sorcery causes a dangerous imbalance in the world. As the moon steadily draws nearer to the earth and Ponyo's father sends the ocean's mighty waves to find his daughter, the two children embark on an adventure of a lifetime to save the world and fulfill Ponyo's dreams of becoming human.",
                       labelText: 'Deskripsi',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -819,16 +822,16 @@ class _AddItemState extends State<AddItem> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('Nama: ${_item.name}'),
-                                        Text('Jumlah: ${_item.amount}'),
-                                        Text('Deskripsi: ${_item.description}'),
-                                        Text('Harga: ${_item.price}'),
-                                        Text('Tahun: ${_item.year}'),
-                                        Text('Genre: ${_item.genre}'),
-                                        Text('Durasi: ${_item.duration}'),
-                                        Text('Rating: ${_item.rating}'),
-                                        // Show Image
                                         Image.file(File(_item.image)),
+                                        Text("Name: ${_item.name}"),
+                                        Text("Amount: ${_item.amount}"),
+                                        Text("Price: ${_item.price}"),
+                                        Text("Year: ${_item.year}"),
+                                        Text("Genre: ${_item.genre}"),
+                                        Text("Duration: ${_item.duration}"),
+                                        Text("Rating: ${_item.rating}"),
+                                        Text(
+                                            "Description: ${_item.description}"),
                                       ],
                                     ),
                                   ),
@@ -1021,3 +1024,218 @@ class LeftDrawer extends StatelessWidget {
 ```
 Selanjutnya saya menambahkan *drawer* ke *file* `menu.dart` dan `add_item.dart` dengan menambahkan kode `drawer: const LeftDrawer(),` di dalam *widget* `Scaffold`.
 
+### 4. Membuat *screen* untuk melihat daftar item
+Sebelum membuat *screen* untuk melihat daftar item, saya menambahkan variabel `items` di *file* `item.dart` untuk menyimpan daftar item semetara. Berikut adalah *code* untuk *file* `item.dart`:
+```dart
+// menambahkan dummy data
+List<Item> items = [
+  Item(
+    name: "Ponyo",
+    amount: 10,
+    description:
+        "The son of a sailor, 5-year-old Sosuke lives a quiet life on an oceanside cliff with his mother Lisa. One fateful day, he finds a beautiful goldfish trapped in a bottle on the beach and upon rescuing her, names her Ponyo. But she is no ordinary goldfish. The daughter of a masterful wizard and a sea goddess, Ponyo uses her father's magic to transform herself into a young girl and quickly falls in love with Sosuke, but the use of such powerful sorcery causes a dangerous imbalance in the world. As the moon steadily draws nearer to the earth and Ponyo's father sends the ocean's mighty waves to find his daughter, the two children embark on an adventure of a lifetime to save the world and fulfill Ponyo's dreams of becoming human.",
+    price: 10000,
+    year: 2008,
+    genre: "Animation",
+    duration: 101,
+    rating: 7.7,
+    image: "assets/images/Ponyo_(2008).png",
+  ),
+  Item(
+    name: "Kiki's Delivery Service",
+    amount: 5,
+    description:
+        "This is the story of a young witch, named Kiki who is now 13 years old. But she is still a little green and plenty headstrong, but also resourceful, imaginative, and determined. With her trusty wisp of a talking cat named Jiji by her side she's ready to take on the world, or at least the quaintly European seaside village she's chosen as her new home.",
+    price: 35000,
+    year: 1989,
+    genre: "Fantasy",
+    duration: 103,
+    rating: 7.8,
+    image: "assets/images/Kiki's_Delivery_Service_(1989).jpg",
+  ),
+  Item(
+    name: "My Neighbor Totoro",
+    amount: 16,
+    description:
+        "Two young girls, 10-year-old Satsuki and her 4-year-old sister Mei, move into a house in the country with their father to be closer to their hospitalized mother. Satsuki and Mei discover that the nearby forest is inhabited by magical creatures called Totoros (pronounced toe-toe-ro). They soon befriend these Totoros, and have several magical adventures.",
+    price: 45250,
+    year: 1988,
+    genre: "Comedy",
+    duration: 86,
+    rating: 8.2,
+    image: "assets/images/My_Neighbor_Totoro_(1988).jpg",
+  )
+];
+```
+> Assets yang digunakan diimport ke dalam *file* `pubspec.yaml`
+
+Selanjutnya, saya membuat *widget* `ItemCard` untuk menampilkan item. Berikut adalah *code* untuk *file* `widgets/item_card.dart`:
+```dart
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:blockbuster/models/item.dart';
+
+class ItemCard extends StatelessWidget {
+  final Item item;
+
+  const ItemCard(this.item, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(item.name),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      item.image.startsWith('assets')
+                          ? Image.asset(
+                              item.image,
+                            )
+                          : Image.file(
+                              File(item.image),
+                            ),
+                      Text("Price: ${item.price}"),
+                      Text("Year: ${item.year}"),
+                      Text("Genre: ${item.genre}"),
+                      Text("Duration: ${item.duration}"),
+                      Text("Rating: ${item.rating}"),
+                      Text("Description: ${item.description}"),
+                    ],
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Tutup'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: item.image.startsWith('assets')
+                  ? Image.asset(
+                      item.image,
+                      width: double.infinity,
+                    )
+                  : Image.file(
+                      File(item.image),
+                      width: double.infinity,
+                    ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "${item.name} (${item.year})",
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+              child: Text(
+                "${item.genre} - ${item.rating}",
+                style: const TextStyle(
+                  fontSize: 12.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
+Lalu saya membuat *screen* `ItemList` untuk menampilkan daftar item. Berikut adalah *code* untuk *file* `screens/item_list.dart`:
+```dart
+import 'package:flutter/material.dart';
+import 'package:blockbuster/models/item.dart';
+import 'package:blockbuster/widgets/item_card.dart';
+import 'package:blockbuster/widgets/left_drawer.dart';
+
+class ItemList extends StatelessWidget {
+  final List<Item> items;
+
+  const ItemList({Key? key, required this.items}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: const LeftDrawer(),
+      appBar: AppBar(
+        title: const Text('Blockbuster'),
+      ),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(10.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.7,
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return ItemCard(items[index]);
+        },
+      ),
+    );
+  }
+}
+
+```
+
+### 5. Mengimplementasikan *navigation* untuk melihat daftar item
+Selanjutnya, saya mengimplementasikan *navigation* untuk melihat daftar item. Berikut adalah *code* yang saya tambahkan untuk *file* `menu_item.dart`:
+```dart
+...
+import 'package:blockbuster/models/item.dart';
+import 'package:blockbuster/screens/item_list.dart';
+
+... // Pada bagian onTap
+// Navigator
+if (item.name == "Lihat Item") {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => ItemList(items: items)),
+  );
+}
+
+...
+```
+Saya juga menambahkan *route* untuk *screen* `ItemList` di *file* `left_drawer.dart` agar ketika tombol `Lihat Item` ditekan, maka *screen* `ItemList` akan ditampilkan. Berikut adalah *code* untuk *file* `left_drawer.dart`:
+```dart
+...
+import 'package:blockbuster/models/item.dart';
+import 'package:blockbuster/screens/item_list.dart';
+
+... // Menambahkan ListTile
+ListTile(
+  leading: const Icon(Icons.checklist),
+  iconColor: Colors.white,
+  title: const Text('Lihat Item'),
+  textColor: Colors.white,
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ItemList(items: items)),
+    );
+  },
+),
+
+...
+```

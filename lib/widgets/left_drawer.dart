@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:blockbuster/screens/menu.dart';
 import 'package:blockbuster/screens/add_item.dart';
+import 'package:blockbuster/models/item.dart';
+import 'package:blockbuster/screens/item_list.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({Key? key}) : super(key: key);
@@ -64,6 +66,19 @@ class LeftDrawer extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const AddItem()),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.checklist),
+              iconColor: Colors.white,
+              title: const Text('Lihat Item'),
+              textColor: Colors.white,
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ItemList(items: items)),
                 );
               },
             ),
