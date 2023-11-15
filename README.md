@@ -1259,3 +1259,53 @@ ListTile(
 
 ...
 ```
+## Menjawab Pertanyaan-Pertanyaan
+### 1. Jelaskan perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()`, disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
+Perbedaan antara `Navigator.push()` dan `Navigator.pushReplacement()` adalah `Navigator.push()` menambahkan *screen* baru ke dalam *stack* sedangkan `Navigator.pushReplacement()` mengganti *screen* yang sedang ditampilkan dengan *screen* baru. Berikut adalah contoh penggunaan kedua metode tersebut:
+```dart
+// Navigator.push()
+Navigator.push(
+  context,
+  MaterialPageRoute(builder: (context) => ItemList(items: items)),
+);
+
+// Navigator.pushReplacement()
+Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(builder: (context) => Menu()),
+);
+```
+
+### 2. Jelaskan masing-masing *layout widget* pada Flutter dan konteks penggunaannya masing-masing!
+Berikut adalah masing-masing *layout widget* pada Flutter dan konteks penggunaannya masing-masing:
+1. `Container` adalah *widget* yang digunakan untuk membuat kotak di dalam aplikasi. `Container` dapat mengatur ukuran, warna, dan margin dari kotak yang dibuat. `Container` dapat digunakan sebagai dasar untuk membuat *widget* lain seperti `Row`, `Column`, dan `ListView`.
+2. `Row` adalah *widget* yang digunakan untuk membuat baris di dalam aplikasi. `Row` dapat mengatur posisi dan ukuran dari *widget* yang ada di dalamnya. `Row` dapat digunakan untuk menampilkan beberapa *widget* secara horizontal.
+3. `Column` adalah *widget* yang digunakan untuk membuat kolom di dalam aplikasi. `Column` dapat mengatur posisi dan ukuran dari *widget* yang ada di dalamnya. `Column` dapat digunakan untuk menampilkan beberapa *widget* secara vertikal.
+4. `ListView` adalah *widget* yang digunakan untuk membuat daftar di dalam aplikasi. `ListView` dapat mengatur posisi dan ukuran dari *widget* yang ada di dalamnya. `ListView` dapat digunakan untuk menampilkan daftar *widget* secara vertikal dengan *scrolling*.
+5. `GridView` adalah *widget* yang digunakan untuk membuat daftar di dalam aplikasi seperti *grid*. `GridView` dapat mengatur posisi dan ukuran dari *widget* yang ada di dalamnya. `GridView` dapat digunakan untuk menampilkan daftar *widget* secara horizontal dan vertikal dengan *scrolling*.
+6. `Stack` adalah *widget* yang digunakan untuk membuat tumpukan di dalam aplikasi. `Stack` dapat mengatur posisi dan ukuran dari *widget* yang ada di dalamnya. `Stack` dapat digunakan untuk menampilkan beberapa *widget* secara bersamaan.
+
+### 3. Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
+Berikut adalah elemen input pada form yang saya pakai pada tugas kali ini:
+1. `TextFormField` adalah *widget* yang digunakan untuk membuat *text field* di dalam aplikasi. Saya menggunakan `TextFormField` karena `TextFormField` dapat digunakan untuk membuat *text field* yang dapat menerima input dari pengguna dan dapat melakukan validasi terhadap input yang diberikan.
+2. `ImagePicker` adalah *widget* yang digunakan untuk membuat *image picker* di dalam aplikasi. Saya menggunakan `ImagePicker` karena `ImagePicker` dapat digunakan untuk menerima input dari pengguna berupa gambar.
+
+### 4. Bagaimana penerapan *clean architecture* pada aplikasi Flutter?
+Penerapan *clean architecture* pada aplikasi Flutter adalah dengan memisahkan *code* menjadi 3 bagian yaitu *presentation*, *domain*, dan *data*. *Presentation* adalah bagian yang berisi *code* untuk menampilkan *widget* di dalam aplikasi. *Domain* adalah bagian yang berisi *code* untuk mengatur *business logic* di dalam aplikasi. *Data* adalah bagian yang berisi *code* untuk mengatur data di dalam aplikasi. Berikut adalah struktur proyek setelah saya menerapkan *clean architecture* pada aplikasi Flutter:
+```
+blockbuster/
+  ...
+  lib/
+    models/
+      item.dart
+    screens/
+      add_item.dart
+      item_list.dart
+      menu.dart
+    widgets/
+      item_card.dart
+      left_drawer.dart
+      menu_item.dart
+    main.dart
+  ...
+```
