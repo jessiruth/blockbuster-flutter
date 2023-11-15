@@ -109,6 +109,16 @@ class ItemCard extends StatelessWidget {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+              child: Text(
+                "Rp ${item.price} - ${item.amount} pcs left",
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.white,
+                ),
+              ),
+            )
           ],
         ),
       ),

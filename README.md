@@ -1182,6 +1182,16 @@ class ItemCard extends StatelessWidget {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+              child: Text(
+                "Rp ${item.price} - ${item.amount} pcs left",
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.white,
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -1215,7 +1225,7 @@ class ItemList extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.5,
+          childAspectRatio: 0.45
         ),
         itemCount: items.length,
         itemBuilder: (context, index) {
@@ -1226,7 +1236,6 @@ class ItemList extends StatelessWidget {
   }
 }
 
-...
 ```
 Saya juga menambahkan *route* untuk *screen* `ItemList` di *file* `left_drawer.dart` agar ketika tombol `Lihat Item` ditekan, maka *screen* `ItemList` akan ditampilkan. Berikut adalah *code* untuk *file* `left_drawer.dart`:
 ```dart
