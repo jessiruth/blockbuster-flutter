@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:blockbuster/models/item.dart';
 
@@ -18,7 +17,7 @@ class ItemCard extends StatelessWidget {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text(
-                  item.name,
+                  item.fields.name,
                   style: const TextStyle(
                     color: Color(0xFFB0578D),
                   ),
@@ -28,34 +27,31 @@ class ItemCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      item.image.startsWith('assets')
-                          ? Image.asset(
-                              item.image,
-                            )
-                          : Image.file(
-                              File(item.image),
-                            ),
-                      Text("Price: ${item.price}",
+                      Image.network(
+                        "https://jess-blockbuster.adaptable.app/media/${item.fields.image}",
+                        fit: BoxFit.cover,
+                      ),
+                      Text("Price: ${item.fields.price}",
                           style: const TextStyle(
                             color: Colors.white,
                           )),
-                      Text("Year: ${item.year}",
+                      Text("Year: ${item.fields.year}",
                           style: const TextStyle(
                             color: Colors.white,
                           )),
-                      Text("Genre: ${item.genre}",
+                      Text("Genre: ${item.fields.genre}",
                           style: const TextStyle(
                             color: Colors.white,
                           )),
-                      Text("Duration: ${item.duration}",
+                      Text("Duration: ${item.fields.duration}",
                           style: const TextStyle(
                             color: Colors.white,
                           )),
-                      Text("Rating: ${item.rating}",
+                      Text("Rating: ${item.fields.rating}",
                           style: const TextStyle(
                             color: Colors.white,
                           )),
-                      Text("Description: ${item.description}",
+                      Text("Description: ${item.fields.description}",
                           style: const TextStyle(
                             color: Colors.white,
                           )),
@@ -78,20 +74,15 @@ class ItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: item.image.startsWith('assets')
-                  ? Image.asset(
-                      item.image,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.file(
-                      File(item.image),
-                      fit: BoxFit.cover,
-                    ),
+              child: Image.network(
+                "https://jess-blockbuster.adaptable.app/media/${item.fields.image}",
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "${item.name} (${item.year})",
+                "${item.fields.name} (${item.fields.year})",
                 style: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -102,7 +93,7 @@ class ItemCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
               child: Text(
-                "${item.genre} - ${item.rating}",
+                "${item.fields.genre} - ${item.fields.rating}",
                 style: const TextStyle(
                   fontSize: 14.0,
                   color: Colors.white,
@@ -112,7 +103,7 @@ class ItemCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
               child: Text(
-                "Rp ${item.price} - ${item.amount} pcs left",
+                "Rp ${item.fields.price} - ${item.fields.amount} pcs left",
                 style: const TextStyle(
                   fontSize: 14.0,
                   color: Colors.white,

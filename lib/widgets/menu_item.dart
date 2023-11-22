@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:blockbuster/models/item.dart';
 import 'package:blockbuster/screens/add_item.dart';
 import 'package:blockbuster/screens/item_list.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:blockbuster/screens/login.dart';
 
 class MenuItem {
   final String name;
@@ -18,38 +20,63 @@ class MenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Material(
       color: item.color,
       child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Text(
-                  "Kamu telah menekan tombol ${item.name}",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                ),
-                duration: const Duration(seconds: 1),
-                backgroundColor: item.color,
-              ),
-            );
-
+        onTap: () async {
           // Navigator
           if (item.name == "Tambah Item") {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddItem()),
+              MaterialPageRoute(builder: (context) => const AddItem()),
             );
           }
           if (item.name == "Lihat Item") {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ItemList(items: items)),
+              MaterialPageRoute(builder: (context) => const ItemList()),
             );
+          }
+          if (item.name == "Logout") {
+            final response = await request
+                .logout("https://jess-blockbuster.adaptable.app/auth/logout");
+            if (response["status"]) {
+              String message = response["message"];
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      message,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    duration: const Duration(seconds: 1),
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                );
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Logout Failed"),
+                  content: Text(response["message"]),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("OK"),
+                    ),
+                  ],
+                ),
+              );
+            }
           }
         },
         child: Container(

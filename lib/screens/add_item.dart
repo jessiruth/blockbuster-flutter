@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:blockbuster/models/item.dart';
 import 'package:blockbuster/widgets/left_drawer.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 
 class AddItem extends StatefulWidget {
   const AddItem({Key? key}) : super(key: key);
@@ -14,7 +18,7 @@ class AddItem extends StatefulWidget {
 
 class _AddItemState extends State<AddItem> {
   final _formKey = GlobalKey<FormState>();
-  var _item = Item(
+  var _item = Fields(
     name: '',
     amount: 0,
     description: '',
@@ -24,6 +28,7 @@ class _AddItemState extends State<AddItem> {
     duration: 0,
     rating: 0,
     image: '',
+    user: 1,
   );
 
   @override
@@ -275,46 +280,97 @@ class _AddItemState extends State<AddItem> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Theme.of(context).primaryColor,
                             foregroundColor: Colors.white),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate() &&
                               _item.image != '') {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title:
-                                      const Text('Film berhasil ditambahkan'),
-                                  content: SingleChildScrollView(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Image.file(File(_item.image)),
-                                        Text("Name: ${_item.name}"),
-                                        Text("Amount: ${_item.amount}"),
-                                        Text("Price: ${_item.price}"),
-                                        Text("Year: ${_item.year}"),
-                                        Text("Genre: ${_item.genre}"),
-                                        Text("Duration: ${_item.duration}"),
-                                        Text("Rating: ${_item.rating}"),
-                                        Text(
-                                            "Description: ${_item.description}"),
-                                      ],
+                            var image = File(_item.image);
+                            var url =
+                                "https://jess-blockbuster.adaptable.app/create-flutter/";
+                            var request =
+                                http.MultipartRequest('POST', Uri.parse(url));
+                            final cookieRequest = Provider.of<CookieRequest>(
+                                context,
+                                listen: false);
+                            request.headers.addAll(cookieRequest.headers);
+                            request.fields['name'] = _item.name;
+                            request.fields['amount'] = _item.amount.toString();
+                            request.fields['description'] = _item.description;
+                            request.fields['price'] = _item.price.toString();
+                            request.fields['year'] = _item.year.toString();
+                            request.fields['genre'] = _item.genre;
+                            request.fields['duration'] =
+                                _item.duration.toString();
+                            request.fields['rating'] = _item.rating.toString();
+                            request.files.add(await http.MultipartFile.fromPath(
+                                'image', _item.image));
+                            var response = await http.Response.fromStream(
+                                await request.send());
+                            var status = jsonDecode(response.body)['status'];
+                            if (status) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text('Film berhasil ditambahkan'),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Image.file(
+                                            image,
+                                            fit: BoxFit.cover,
+                                          ),
+                                          Text("Name: ${_item.name}"),
+                                          Text("Amount: ${_item.amount}"),
+                                          Text("Price: ${_item.price}"),
+                                          Text("Year: ${_item.year}"),
+                                          Text("Genre: ${_item.genre}"),
+                                          Text("Duration: ${_item.duration}"),
+                                          Text("Rating: ${_item.rating}"),
+                                          Text(
+                                              "Description: ${_item.description}"),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: const Text('OK'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              _formKey.currentState!.reset();
+                              setState(() {
+                                _item.image = '';
+                              });
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Film gagal ditambahkan'),
+                                    content: SingleChildScrollView(
+                                      child: Text(
+                                          jsonDecode(response.body)['message']),
                                     ),
-                                  ],
-                                );
-                              },
-                            );
-                            _formKey.currentState!.reset();
-                            _item.image = '';
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           }
                         },
                         child: const Text(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:blockbuster/screens/menu.dart';
 import 'package:blockbuster/screens/add_item.dart';
-import 'package:blockbuster/models/item.dart';
 import 'package:blockbuster/screens/item_list.dart';
 
 class LeftDrawer extends StatelessWidget {
@@ -77,8 +76,7 @@ class LeftDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => ItemList(items: items)),
+                  MaterialPageRoute(builder: (context) => const ItemList()),
                 );
               },
             ),
