@@ -2457,7 +2457,7 @@ class ItemList extends StatefulWidget {
 class _ItemListState extends State<ItemList> {
   Future<List<Item>> fetchItems(BuildContext context) async {
     final request = context.watch<CookieRequest>();
-    var url = 'https://pras-yugioh-card.onrender.com/json';
+    var url = 'https://jess-blockbuster.adaptable.app/get-item-json/';
     var response = await request.get(url);
 
     List<Item> items = [];

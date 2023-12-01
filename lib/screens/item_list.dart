@@ -20,7 +20,6 @@ class _ItemListState extends State<ItemList> {
 
     List<Item> items = [];
     for (var i in response) {
-      print(i);
       if (i != null) {
         Item item = Item.fromJson(i);
         items.add(item);
